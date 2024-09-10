@@ -1,0 +1,33 @@
+1. Measure Performance: Use webpagetest.org, lighthouse etc.
+2. Tunning Images
+    - JPEGs can be saved in varoius quality level.
+    - If image showing size is 20 px by 20 px, then save it 20px by 20px, not original image
+    - gif and png has the most color depth, avoiding is the best
+    - Remove Meta Data of Image Format if No Need Before Save
+    - Optimize Image before Save
+    - Optimize Image by tinypng.com
+    - Use Responsive Image for Different Screen Sizes
+    - Set Height and Width of the Image. This will allow the browser to set aside the space for the image before downloading.
+3. Caching Setup: Server Side Caching, Client Side Caching. Less Expiry Time for Content which will be updated soon. Long Expiry can set for logo, stylesheet, library etc like one weak. 
+   Cache-Busting- The ideal way is to have long cache expiries, and force the browser to download the content if it changes. But It needs extra effort to implement.
+   Strategies for Cache-Busting CSS: https://css-tricks.com/strategies-for-cache-busting-css/
+4. Gzip Content: on average 70%-90% of network traffic of text resources can be saved by zipping. Font  .woff and .woff2 are already compressed so do not benefit from gzipping again. The others require compressing.
+                 Every modern browser (going right back to Internet Explorer 5.5) supports gzipped content. Web browsers also send a Content-Encoding header when they can support gzip content, so web servers will not send gzip content in the unlikely event that a browser does not support gzipped content.
+                 Very old versions of browsers (e.g. Netscape Navigator 4) used to have some issues with gzip content, so you might see some extra config to handle those in some web server config, but those browsers are long gone and that config is no longer necessary. All modern web servers also support gzipped content.
+                 The main downside is the increased CPU cost on both the server, and the client side, but that is unlikely to be an issue for most people.
+                 Implenting gzip on your web server is an easy performance gain for your users, and will help reduce your own bandwidth costs. 
+                 Brotli - is a new, better Gzip for web servers.
+
+5. One of the key things to do when setting up a website is to be able to track how people are using it. How many visitors do you get? What pages are they looking at? What pages are they not looking at? How long do they spend on your website - are they off again with a few seconds (suggesting your website is not what they are looking for) or do they hang around on certain pages? Who are your users and where do they come from (both in real world terms of where they are based, and also in what site or search engine led them to your site).
+6. Google Analytics is probably one of the most well known tools and integrates nicely with other Google products and features so certain should be one to consider.
+7. Add HTTP Performance Header (Caching, Etags, Keep-Alive in Header to see performance)
+8. The main issue with HTTP/1.1 is that it is, basically synchronous. This means you request a resource from a web server (be it a web page, an image, a stylesheet...etc.) and you have to wait for a response.
+   HTTP/2 allows this and therefore drastically reduces the need for the hacks and the downsides. HTTP/2 also has some other benefits including: It's a binary rather than text based protocol, it allows compression of HTTP Headers, it allows the server to push requests (e.g. if you ask for the home page, it might push the stylesheet and other resources it knows you will need). This last one will be interesting but is not widely supported yet. The main benefit at present is the ability to send and receive a number of requests at once.
+9. Register your websites with search engine webmaster tools (google search console/ google webmaster tool). it uses to communicate with websites to let them know of issues with their website (for example broken links, alerts if Google thinks your website has been compromised or informing you if Google will penalise you in search results if it thinks you are trying to rig search results).
+10. Check the code on your website uses valid HTML and CSS
+11. Follow Google Search Engine Optimization Guide.
+12. Improve the Accessibility of Your Website.
+13. Setup Sitemap - sitemaps.org has the spefication for sitemaps.
+14. Allow Users to Feedback on Your Pages and Also Report Issue or Suggest Anything Option.
+15. Ensure Your E-mails are validated to reduce the chances of mail ending up in spam folder.
+16. Use CDN
