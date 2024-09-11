@@ -1,0 +1,79 @@
+1. TTFB(Time to First Byte):  A low TTFB is crucial for getting markup out to the client as soon as possible.Most sites should strive to have a TTFB of 0.8 seconds (800 ms) or less.
+   - Measure TTFB from pagespeed.web.dev (PageSpeed Insights)
+   - Server-Timing response header can be used in your application backend to measure distinct backend processes
+   - Can Create APM (Application Performance Monitoring) Report in Admin Dashboard
+   - Improving Server Response Time: Backend Stack Based Optimization, Logic and Query Optimization
+   - Hosting: Shared hosting will generally be slower for Large App. Sufficient Memory Allocation, If we can up to date our backend in that Host.
+   - Users located far from your origin server may still experience high TTFB in the field.
+   - CDNs solve the problem of user proximity from your origin server by using a distributed network of servers that cache resources on servers that are physically closer to your users. These servers are called edge servers.
+   - CDN is the best solution to solve many optimization, http2/3, security, compression, caching easily. They provide it.
+   - Some CDNs allow cache invalidation on site releases allowing the best of both worlds—long cache times, but instant updates when needed.
+   - One common contributor to a high TTFB is more redirects. You want to focus on eliminating same-origin redirects. Cross-origin redirects are trickier as these are often outside of your control, but try to avoid multiple redirects where possible
+   - Use a Service Worker: Use a stale-while-revalidate strategy for assets, Use the app shell model for client rendered applications (SPA)
+   - The 103 Early Hints header is an early response code that the server can send to the browser while the backend is busy preparing markup.
+
+2. Content Delivery Network (CDN): Content delivery networks (CDNs) improve site performance by using a distributed network of servers to deliver resources to users.
+   - The more of your site delivered by your CDN, the better.
+   - A CDN's performance strategy can be thought of in terms of the tradeoff between minimizing latency and maximizing cache hit ratio. 
+   - Commonly offered features include: load balancing, image optimization, video streaming, edge computing, and security products.
+   - Ideally you should use a CDN to serve your entire site. If using a CDN to serve all resources is not an option, you can configure a CDN to only serve a subset of resources - for example, only static resources.
+   - Normalizing the URL used to cache the server response will increase CHR.
+   - Unnecessary use of Set-Cookie header should be avoided.
+   - All text-based responses should be compressed with either gzip or Brotli(Higher Compression Ratio).
+   - Brotli from origin is when a CDN serves resources that were Brotli-compressed by the origin. Automatic Brotli compression is when resources are Brotli compressed by the CDN. 
+   - Sites that want to maximize performance should apply Brotli compression at both their origin server and CDN. 
+   - If your CDN hasn't already enabled HTTP/2 by default, you should consider turning it on. HTTP/2 provides multiple performance benefits over HTTP/1 and is supported by all major browsers.
+   - CDN image optimization services typically focus on image optimizations that can be applied automatically in order to reduce image transfer size.
+   - Minification removes unnecessary characters from JavaScript, CSS, and HTML. It's preferable to do minification at the origin server, rather than the CDN. 
+
+3. Priorotize Resources (Fetch Priority API): 
+   - Boosting the priority of the LCP image by specifying fetchpriority="high" on the image element, causing LCP to happen sooner.
+   - Increasing the priority of async scripts, using better semantics than the current most common hack (inserting a <link rel="preload"> for the async script).
+   - Preload lets you tell the browser about critical resources you want to load early before the browser would naturally discover them. This is especially useful for resources that are harder to discover, such as fonts included in stylesheets, background images, or resources loaded from a script.
+   - Preconnect helps warm up connections to cross-origin servers and can help improve metrics like Time to first byte.
+   - You can specify fetchpriority="high" to boost the priority of the LCP or other critical images.
+   - Set fetchpriority="low" to lower the priority of images that aren't immediately important.
+   - Lower the priority of preloaded resources
+   - <link rel="preload" as="style" href="theme.css" fetchpriority="low" onload="this.rel='stylesheet'">
+   - Scripts your page needs to be interactive should be load quickly, but shouldn't block other, more critical, render-blocking resources.
+     <script src="async_but_important.js" async fetchpriority="high"></script>
+   - // Important validation data (high by default)
+      let authenticate = await fetch('/user');
+     // Less important content data (suggested low)
+    let suggestedContent = await fetch('/content/suggested', {priority: 'low'});
+   - Preload lets the browser discover a resource early, but it still fetches the resource with the default priority. Conversely, Fetch Priority doesn't help with discoverability, but it does let you increase or decrease the fetch priority.
+   - If a critical image is a CSS background image, preload it with fetchpriority = "high"
+   - Import preloads (dynamic import() or modulepreload) should run after the script tag that needs the import, so make sure the script gets loaded or parsed first so it can be evaluated while its dependencies are loading.
+   - Fonts defined with @font-face rules or background images defined in CSS files aren't discovered until the browser downloads and parses those CSS files. Preloading these resources ensures they are fetched before the CSS files have downloaded.
+   - <link rel="preload" href="ComicSans.woff2" as="font" type="font/woff2" crossorigin>
+   - Avoid preloading too many resources
+   - When preloading fonts, ensure that you're serving fonts in WOFF 2.0 format to reduce resource load time as much as possible.
+   - Preloading JavaScript that powers important interactions may help to keep a page's INP lower, but not too much.
+
+4. Establish Early Network Connection:
+   - Adding rel=preconnect to a <link> informs the browser that your page intends to establish a connection to another domain, and that you'd like the process to start as soon as possible. 
+   - Ex- streaming media from a different origin, preconnect
+   - Preconnecting is only effective for domains other than the origin domain, so you shouldn't use it for your site.
+   - Unnecessary preconnecting can delay other important resources, so limit the number of preconnected domains
+   - You can also initiate a preconnect via the Link HTTP header, it has benefit.
+   - Some types of resources, such as fonts, are loaded in anonymous mode. For those you must set the crossorigin attribute with the preconnect hint
+   - The preconnect hint is best used for only the most critical connections. For all the rest, use <link rel=dns-prefetch> to save time on the first step, the DNS lookup, which usually takes around 20–120 ms.
+   - <link rel="preconnect" href="http://example.com">
+     <link rel="dns-prefetch" href="http://example.com"> here, dns-prefetch is fallback if browser dont support preconnect
+
+5. Prefetch Resources:
+   - Adding <link rel=prefetch> to a web page tells the browser to download entire pages, or some of the resources (like scripts or CSS files), that the user might need in the future.
+   - The prefetch hint consumes extra bytes for resources that are not immediately needed, so this technique needs to be applied thoughtfully.
+   - Prefetch HTML documents when subsequent pages are predictable, so that when a link is clicked, the page is loaded instantly.
+   - Netflix takes advantage of the time users spend on logged-out pages, to prefetch React, which will be used once users log in.
+   - Prefetching images for lower LCP, prefetching stylesheets to improve FCP and LCP, Prefetching JS, Prefetching Web Fonts that not Used in Current Page but Used in Next Page can eliminate cumulative layout shift.
+   - We can apply prefetch to routes or components that are not immediately necessary but will likely be requested soon.
+   -  <link rel="prefetch" href="/articles/" as="document">
+   - Use Package for Smart Prefetching: quicklink (less than 1kb), guess.js (creates analytics report of predictive model)
+
+6. Adaptive Serving Based on Network Quality (Network Information API):
+   - Switch between serving high-definition and low-definition content based on the user's network.
+   - Decide whether to preload resources.
+   - Enable offline mode if the network quality is not good enough to load the app and use the features.
+   - Warn users that doing something (for example, watching video) over cellular could cost them money.
+   - The navigator.connection object contains information about a client's connection.

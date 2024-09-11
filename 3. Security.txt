@@ -1,0 +1,8 @@
+1. Keeping System Up to Date: Update to New Version always.
+2. Use HTTPS
+3. If you already have HTTPS, then it's important to check it's configured correctly. A badly configured HTTPS server is almost as bad as not having any HTTPS at all - worse in some cases depending on how your browsers displays this.
+4. SSL Labs have an excellent free scanning tool where you can type in your website address and it will grade your HTTPS configuration. They even publish a free SSL/TLS Deployment Best Practices document which is kept up to date regularly.
+5. There are a number of HTTP security headers you can set to secure your website. There are a number of standard headers, which can switch on various security settings on the browser, restricting and locking down how the user can use your website in the browser.
+6. A full Penetration Test (aka Pen Test) by an dedicated security company may be appropriate
+7. SSL and TLS Deployment Best Practices: https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices
+8. All Topics from Here: https://www.tunetheweb.com/security/
