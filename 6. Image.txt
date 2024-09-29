@@ -1,0 +1,44 @@
+1. Right Image Format:
+   - Vector Graphics (svg - Use when scene is not complicated), Raster Graphics (jpg, png, webp etc- use when scene is complicated)
+   - A single CSS pixel may correspond directly to a single device pixel, or may be backed by multiple device pixels. 
+   - The more device pixels there are, the finer the detail of the displayed content on the screen.
+   - Vector Image can be rendered at any resolution with sharp results. (Higher Processing Cost)
+   - The larger the number of pixels, the larger the file size of a raster image. If a raster image is required, serve responsive images.
+     Because if we double the screen, the image size will be quadrple (height x width)
+   - Universally Supported Raster Image: JPG, PNG. Modern Browsers Support WebP and AVIF (Better Compression and Features than JPG PNG).
+   - We can use WebP or AVIF images along with a JPEG or PNG image as a fallback.
+   - If need animation, use video rathe than GIF. GIF creates larger file size.
+   - PNG produce highest quality, but highre ile size.
+   - When an image is an LCP candidate, efficiently encoding that image is crucial to improving LCP.
+   - GIF to Video Converter: FFmpeg
+2. Correct Level of Compression:
+   - Minify SVG Image using SVGO. Can use GZIP compression by ensuring server is configured to compress SVG assets.
+   - If Image similar color of pixel almost, compressor can use delta encoding. 
+   - Delta encoding is a way of storing or transmitting data in the form of differences (deltas) between sequential data rather than complete files
+   - Image is processed with a lossy filter that eliminates some pixel data, Image is processed with a lossless filter that compresses the pixel data.
+   - Remove Unnecessary Image Metadata (geo info, camera info etc.)
+   - Resize Image, two popular tools: sharp npm package (can resize and make different formats), ImageMagic CLI tool
+   - Use Automated Tools so that Every Image automatically Optimized
+   - WebM videos are much smaller than MP4 videos, but not all browsers support WebM so it makes sense to generate both.
+
+3. Use Imagemin: Lossy plugins are the best choice. They offer significantly greater filesize savings
+4. Serve Images with Correct Dimensions, Resize Image using 'ImageMagic' CLI or GUI base editor.
+5. Must Specify height and Width of the Image in tag or css: img {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  object-fit: cover;
+}
+6. Facebook experienced a 25-35% filesize savings for JPEGs and an 80% filesize savings for PNGs when they switched to using WebP.
+7. WebP offers both lossless and lossy compression. In lossless compression no data is lost. Lossy compression reduces file size, but at the expense of possibly reducing image quality.
+8. To convert image to WEBP, we can use Imagemin or cwebp command-line tool.
+   - <picture> <source type="image/webp" srcset="flower.webp"> <source type="image/jpeg" srcset="flower.jpg"> <img src="flower.jpg" alt=""> </picture>
+9. Switching your website to an image CDN can yield a 40–80% savings in image file size
+10. Image CDNs specialize in transforming, optimizing, and delivering images. You can also think of them as APIs for accessing and manipulating the images used on your site. For images loaded from an image CDN, an image URL indicates not only which image to load, but also parameters like size, format, and quality.
+11. Image CDNs are different from build-time image optimization scripts in that they create new versions of images as they're needed. Best Approach comapring Pacckage or Manual.
+12. There are two types Image CDNs- Self-Managed (Thumbor- Most Popular, Imageinary, Imagor) and Third-Party Managed
+13. Browser Level Lazy Load Image using loading='lazy' attribute. Defer loading of the resource until it reaches a calculated distance from the viewport.
+    Default is Eager- Image is loaded regardless of where it's located on the page
+14. For Important Image, We can use fetchpriority="high"
+15. An image with loading="lazy" and fetchpriority="high" is still delayed while it's off-screen, and then fetched with a high priority when it's almost within the viewport. This combination isn't really necessary because the browser would likely load that image with high priority anyway.
+16. For images that are visible when the user first loads the page, and especially for LCP images, use the browser's default eager loading so they can be available right away.
+17. Also can Lazy Load Off Screens IFrames

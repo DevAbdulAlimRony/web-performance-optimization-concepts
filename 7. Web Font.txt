@@ -1,0 +1,12 @@
+1. A font is downloaded only if it is referenced by styling that is used on the page, not in @font-face 
+2. Inline Font Declarations in Head will Load font Faster than from External CSS
+3. If third party link use, use rel="preconnect"
+   <link rel="preconnect" href="https://fonts.com">
+   <link rel="preconnect" href="https://fonts.com" crossorigin>
+4. Using a self-hosted (must use CDN, HTTP/2) font should deliver better performance as it eliminates a third-party (but fast render) connection setup
+5. Of the modern font fonts, WOFF2 is the newest, has the widest browser support, and offers the best compression.
+6. Subsets Font: The unicode-range descriptor in the @font-face declartion informs the browser which characters a font can be used for.
+7. A subset font includes a smaller portion of the glyphs that were contained in the original font file. For example, rather than serve all characters to all users, a site might generate separate subset fonts for Latin and Cyrillic characters. 
+8. Use Fewer Web Fonts. can use system-ui as fallback font-family
+9. font-display: swap (If dont loaded, swap with fallback)
+10. Reduce the shift between your fallback font and your webfont- Can use size-adjust attribute

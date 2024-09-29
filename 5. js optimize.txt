@@ -1,0 +1,47 @@
+1. Optimize Long Tasks: Don't block the main thread, Break up your long tasks.
+   - A task is any discrete piece of work that the browser does. That work includes rendering, parsing HTML and CSS, running JavaScript, and other types of work
+   - Js is the largest source task.
+   - The main thread is where most tasks run in the browser, and where almost all JavaScript you write is executed
+   - The main thread can only process one task at a time. Any task that takes longer than 50 milliseconds is a long task.
+   - The user interface will feel unresponsive, and possibly even broken if the main thread is blocked for very long periods of time.
+   - Break Up Your Work into Smaller Functions.
+   - Use Async/Await
+   - Reaserch About yieldToMain from Vdo Tutorial and Try to Implement
+   - The scheduler API offers the postTask() function which allows for finer-grained scheduling of tasks, and is one way to help the browser prioritize work so that low priority tasks yield to the main thread. 
+   - ield to the main thread for critical, user-facing tasks. Consider experimenting with scheduler.yield().
+   - Prioritize tasks with postTask()- 
+     function saveSettings () {
+        // Validate the form at high priority
+        scheduler.postTask(validateForm, {priority: 'user-blocking'});
+
+        // Show the spinner at high priority:
+        scheduler.postTask(showSpinner, {priority: 'user-blocking'});
+
+        // Update the database in the background:
+        scheduler.postTask(saveToDatabase, {priority: 'background'});
+
+        // Update the user interface at high priority:
+        scheduler.postTask(updateUI, {priority: 'user-blocking'});
+
+        // Send analytics data in the background:
+        scheduler.postTask(sendAnalytics, {priority: 'background'});
+    };
+
+2. Optimize Input Delay: Input delay is the period of time beginning from when the user first interacts with a page—such as tapping on a screen, clicking with a mouse, or pressing a key—up to when the event callbacks for the interaction begin to run.
+   - It always takes some amount of time for the operating system to recognize an input event and pass it to the browser.
+   - Your input delay should be low enough to avoid problems.
+   - Some input delay is unavoidable, but on the other hand, Some input delay is avoidable.
+   - Interaction overlap means that after you've interacted with one element, you make another interaction with the page before the initial interaction has had a chance to render the next frame.
+   - Consider Using Debouncing, AbortController, Be aware when using setTimeOut and Interval.
+
+3. Evaluate Sript: When a script is evaluated, it is first parsed for errors. If the parser doesn't find errors, the script is then compiled into bytecode, and then can continue onto execution.
+   - While you should always strive to load as little JavaScript as possible during page load, splitting up your scripts ensures that, instead of one large task that may block the main thread, you have a greater number of smaller tasks that won't block the main thread at all.
+   - Load as little JavaScript as possible.
+   - Web workers are a special JavaScript use case. Web workers are registered on the main thread, and the code within the worker then runs on its own thread. This is hugely beneficial in the sense that—while the code that registers the web worker runs on the main thread—the code within the web worker doesn't. 
+   - Larger scripts will benefit much more from compression. 
+   - Bundlers are ideal tools for managing the output size for the scripts your website (webpack, rollup, esbuild)
+
+4. Web Worker: JavaScript is, by default, a single-threaded language that runs tasks on the main thread. However, web workers provide a sort of escape hatch from the main thread by allowing developers to create separate threads to handle work off of the main thread.
+              - Comlink library can be used.
+              - Using OMT architecture.
+              - Web workers aren't yet mainstream, so most module tools—like webpack and Rollup—don't support them out of the box. (Parcel does though!
