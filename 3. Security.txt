@@ -6,3 +6,32 @@
 6. A full Penetration Test (aka Pen Test) by an dedicated security company may be appropriate
 7. SSL and TLS Deployment Best Practices: https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices
 8. All Topics from Here: https://www.tunetheweb.com/security/
+9. For Laravel, Try to Avoid Raw SQL Queries, Stick to Eloquent 
+10. Use CAPTCHA for any endpoints that can be exploided using brute-force techniques (login, registration, forgot password forms)
+    Captcha will stop most automated attacks (Google's reCAPTCHA)
+11. Rate Limit Login Attempts
+12. Use Multi Factor Authentication
+13. Never commit any default login details or sensitive API credentials to your code repository.
+14. Configure Sessions Securely
+15. Ensure you serve the entire application over HTTPS with a TLS certificate.
+16. If users try to access the HTTP equivalent, redirect them to the secure route instead and make use of HSTS headers.
+17. Hash all passwords using an adaptive salted hashing function. 
+18. Encrypt all sensitive data stored at rest. Never use your own developed encryption functions. Instead, use Laravel’s(or Framework's if you use) built-in encryption functions that use OpenSSL to provide AES-256 and AES-128 encryption.
+19. If you use enumeration for files or primary keys to identify records, you could be inadvertently be exposing information about your system.
+20. Never trust user-uploaded files. If these uploaded files are not validated or handled correctly, they can allow access to your entire system.
+    - set a min and max file upload size
+    - set number of simultaneous file uploads
+    - only allow specific file types
+    - rename all files upon upload
+    - upload files to a non-public directory or third party object storage
+21. Disable External resolution when using default PHP XML parser. If you cannot disable this functionality, make sure that your XML parser is updated and that you’re using at least SOAP v1.2 or higher where applicable. 
+22. Always perform authorisation checks on any operations that are only available to logged-in users. 
+23. Keep all server software and any dependencies in your web application up to date.
+24. Disable directory listing for your web server.
+25. Disable debugging on production servers. Even on staging servers, debugging can reveal sensitive server information by outputting all your environment variables. 
+26. Escaping all output this way will reduce your website visitors’ exposure to XSS and CSRF (Cross-Site Request Forgery) attacks.
+27. Use a package like HTMLPurifier to remove any potentially malicious code.
+28. Be wary of unserialising anything from untrusted sources. This includes cookies your application might create. 
+29. Remove any dependencies not in use. This will reduce the potential number of attack entry points.
+30. Subscribe to security bulletins and include a security scanner (such as Snyk) as part of your CI/CD pipeline.
+31. When it comes to your application and server, log everything, including failed login attempts and password resets.

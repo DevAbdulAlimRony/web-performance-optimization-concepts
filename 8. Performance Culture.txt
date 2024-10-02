@@ -1,0 +1,6 @@
+1. Access Your Site's Google Analytics
+2. Google Analytics - Admin - View - View Settings - Copy the View Id
+3. Go This Doc and Copy: https://docs.google.com/spreadsheets/d/13BnREVWPhIiDYdEvOSYP3ovlMggPbnRQPMTSir6y__I/edit?gid=1619071522#gid=1619071522
+4. Follow Instructs There
+5. Using the chart, identify a period before the speed optimization (when load times were high) and a period after the speed optimization (when load times should be lower) that you want to analyze.
+6. Now, We can Calculate Average Speed in a Duration Comapred to Another Months Duration
