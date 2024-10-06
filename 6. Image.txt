@@ -42,3 +42,8 @@
 15. An image with loading="lazy" and fetchpriority="high" is still delayed while it's off-screen, and then fetched with a high priority when it's almost within the viewport. This combination isn't really necessary because the browser would likely load that image with high priority anyway.
 16. For images that are visible when the user first loads the page, and especially for LCP images, use the browser's default eager loading so they can be available right away.
 17. Also can Lazy Load Off Screens IFrames
+
+18. High Performance Image Workflow:
+    - When choosing encodings for a directory of photographic images, AVIF is the clear winner for quality and transfer size but has limited support, WebP provides an optimized, modern fallback, and JPEG is the most reliable default.
+    - The gulp-responsive plugin, which makes use of Sharp, is one option of many that all follow a similar pattern: collecting all the files in a source directory, re-encode them, and compress them based on the same standardized "quality" 
+    - 

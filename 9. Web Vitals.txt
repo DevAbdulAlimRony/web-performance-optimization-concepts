@@ -6,6 +6,16 @@ Web Vitals is an initiative by Google to provide unified guidance for quality si
 - Each of the Core Web Vitals can be measured in JavaScript using standard web APIs. Easiest Way: Use the js web-vitals library
 
 1. Largest Contentful Paint:
+   -  How soon after opening a page, the largest content element on the page appears. The fastest, the Better.
    - Elemnts considered: img, image inside an svg, video, bg image, loaded with url()
    - Measure- If Lighthouse and CrUX(PageSpeed Insights) disagree, then CrUX likely provides a more accurate picture of your user experience.
    - 
+
+2. Cumulative Layout Shift:
+   - How stable the page layout is once the page starts loading
+
+
+3. Interaction to Next Paint
+   - How long the page remains frozen after user interaction with no visual updates.
+
+**** We can use debugbear to monitor (lab test, crux test, user test)
