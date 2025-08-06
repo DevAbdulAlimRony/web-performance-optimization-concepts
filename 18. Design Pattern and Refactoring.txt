@@ -1,0 +1,92 @@
+// *** Data Filtering Patterns
+1. Direct in Controller
+2. Trait and Model Scope
+3. Pipeline-
+    if (Request::filled('sort_by_category')) {
+        $district_id = Request::input('sort_by_category');
+        $cityIds     = BdCity::where('district_id', $district_id)->pluck('id');
+         $query->whereIn('city_id', $cityIds);
+    }
+
+4. Query Filter Class: You create a single filter class per resource, responsible for handling all possible filters for a model.
+5. Spatie Query Builder (3rd Party Package)
+6. Service Layer Filtering by Service Class
+
+Pipeline and Spatie Package is best for reusability and clean code.
+We could make pipeline for our sort, search and pagination also. At First, We have app/Filters/AllFilterClasses, Then We have a trait called Filterable which has been used in model. 
+Then that scopeFilter is called in controller where filter needs
+
+
+// *** Repository and Service:
+Typically Repository handles one Model where Service can handle multiple models or no model at all for Business Logic and application operations via 3rd party api.
+Repository should have a Interface, and that interface will be called in Controller implemented repositories.
+Repository focus on data access and persistence (Post::all())
+For Service Pattern, there is no specific rules, just create a class and use it
+We can use a interface for service Pattern also (Ex: interface TwitterServiceInterface {public function twitt()})- Like I have different services for local and production which implements same interface (same twit() method with different implementation)
+
+// Builder Pattern
+// Strategy Patterns
+// Factory Pattern
+// Spatie Data Transfer Object (DTOs): For example, we are storing data in web and api for user. In api, a column is email_final, in web level same column is email. If we use Service or Action to Use Data, we can use another folder in app called DataTransferObject for dont repeat
+
+
+// Speed Up Your Application:
+1. Only Fetch the Fields You Need in Your Database Queries
+2. Always Eager Load when Need (Need $comment->author->name ? At first eager load Comment:with('authors))
+3. Globally add Model::preventLazyLoading(); in AppServiceProvider's boot method, then if you dont eager load anywhere it will give error.
+4. Get rid of unwanted packages
+5. Use caching- route, config, event, view clear. and caching queries when need
+6. use the latest version of PHP
+
+
+// Common, Then in User - Inheriting that Common and Overriding index() method to get active data- In Admin, Just status and destroy
+- Better Solution: Actions- Distributor - IndexDistributor, StoreDistributor, UpdateDistributor. Then Use Them in User and Admin as necessary.
+- Use Form Request for Validation, Use Resources for Data Transformation, Use Helpers for common functions, Use Service for Business Logic
+
+// Refactoring
+1. If I am using all methods of another method, rather than delegation use inheritence. Don’t use this technique if the class contains delegation to only a portion of the public methods of the delegate class. By doing so, you would violate the Liskov substitution principle.
+2. Role-specific behavior should be delegated, not overridden
+3. You have a subclass that uses only a portion of the methods of its superclass or it’s not possible to inherit superclass data, Replace Inheritance with Delegation
+4. Form Template Method: Algorithms of subclasses containing same steps in the same order  should put in super class.
+5. Collapse Hierarchy: You have a class hierarchy in which a subclass is practically the same as its superclass, Merge the subclass and superclass.
+6. Extract Interface: Multiple clients are using the same part of a class interface, Move this identical portion to its own interface. Ex. I have same interface with same name same amount methods. Just make it one interface then use in two classes like Notifiable - EmailNotify, SMSNotify
+7. Extract Superclass, Extract Subclass
+8. Push Down Fields: Is a field used only in a few subclasses? Move the field to these subclasses.
+9. Push Down Method: Is behavior implemented in a superclass used by only one (or a few) subclasses? Move this behavior to the subclasses.
+10. Pull Up Constructor Body: Your subclasses have constructors with code that’s mostly identical. Create a superclass constructor and move the code that’s the same in the subclasses to it. Call the superclass constructor in the subclass constructors.
+11. Pull Up Method: Your subclasses have methods that perform similar work. Make the methods identical and then move them to the relevant superclass.
+12. Pull Up Field: Two classes have the same field. Remove the field from subclasses and move it to the superclass.
+13. The name of a method doesn’t explain what the method does, Rename the method.
+14. Add parameter in method if need, Remove parameter which is not used in the method Body
+15. Separate Query from Modifier: Code for getting data is named a query. Code for changing things in the visible state of an object is named a modifier. . If any method returning value and also changing something in object, separate method intow two. This principle tells us to separate code responsible for getting data from code that changes something inside an object.
+16. Multiple methods perform similar actions that are different only in their internal values, numbers or operations, Combine these methods by using a parameter that will pass the necessary special value.
+17. A method is split into parts, each of which is run depending on the value of a parameter, Extract the individual parts of the method into their own methods and call them instead of the original method. Ex. if feed= poultry then do that, if feed=aqua then do that. Separate methods for every feed type, not in a single method
+18. Rather than preserve part of the object, Preserve Whole Object
+19. Your methods contain a repeating group of parameters, Replace these parameters with an object.
+20. A method isn’t used by other classes or is used only inside its own class hierarchy, Make the method private or protected.
+21. You have a complex constructor that does something more than just setting parameter values in object fields, Create a factory method and use it to replace constructor calls.
+22. A method returns a special value that indicates an error? Throw an exception instead.
+23. You have a complex conditional (if-then/else or switch), Decompose the complicated parts of the conditional into separate methods: the condition, then and else.
+24. You have multiple conditionals that lead to the same result or action, Consolidate all these conditionals in a single expression.
+25. Identical code can be found in all branches of a conditional, Move the code outside of the conditional.
+26. You have a boolean variable that acts as a control flag for multiple boolean expressions, Instead of the variable, use break, continue and return.
+27. You have a group of nested conditionals and it’s hard to determine the normal flow of code execution, Isolate all special checks and edge cases into separate clauses and place them before the main checks. Ideally, you should have a “flat” list of conditionals, one after the other.
+28. Replace Conditional with Polymorphism: You have a conditional that performs various actions depending on object type or properties, Create subclasses matching the branches of the conditional. In them, create a shared method and move code from the corresponding branch of the conditional to it. 
+29. Since some methods return null instead of real objects, you have many checks for null in your code. Introduce Null Object- class NullCustomer extends Customer.
+30. You use direct access to private fields inside a class, Create a getter and setter for the field, and use only them for accessing the field.
+31. You have an array that contains various types of data, Replace the array with an object in class that will have separate fields for each element.
+32. Your code uses a number that has a certain meaning to it, Replace this number with a constant that has a human-readable name explaining the meaning of the number.
+33. Encapsulate Field: You have a public field, Make the field private and create access methods for it.
+34. Replace Type Code with Class. Type code occurs when, instead of a separate data type, you have a set of numbers or strings that form a list of allowable values for some entity. Often these specific numbers and strings are given understandable names via constants, which is the reason for why such type code is encountered so much. Ex. Blood group
+35. Extract method: You have a code fragment in a method that can be grouped together. Move this code to a separate new method (or function) and replace the old code with a call to the method.
+36. Inline Method: Reverse of Method Extracting, when method body is more obvious that the method itself.
+37. You have an expression that’s hard to understand, Place the result of the expression or its parts in separate variables that are self-explanatory.
+38. Iline Temp: You have a temporary variable that’s assigned the result of a simple expression and nothing more, Replace the references to the variable with the expression itself.
+39. Some value is assigned to a parameter inside method’s body, Use a local variable instead of a parameter. function discount($res, $num){$res = $sum;}
+40. A variable, parameter, field, method or class is no longer used (usually because it’s obsolete), remove them
+41. A method contains too many lines of code. Generally, any method longer than ten lines should make you start asking questions, extract method, smae for class.
+42. Dont use More than three or four parameters for a method.
+
+
+// Design Pattern: Design patterns are typical solutions to commonly occurring problems in software design. They are like pre-made blueprints that you can customize to solve a recurring design problem in your code.
+

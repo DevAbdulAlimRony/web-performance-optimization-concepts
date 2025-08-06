@@ -1,0 +1,73 @@
+/* Auto Responsive by Grid */
+.auto_responsive {
+    display: grid !important;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+  .auto_responsive > *:only-child {
+    grid-column: span 1;
+  }
+  @media screen and (max-width: 300px) {
+    .auto_responsive {
+      overflow: auto;
+      padding-inline: 5px;
+    }
+}
+
+/* More Responsive Issues */
+.container{
+  width: min(90%, 1000px); /* Minimum 90%, Max 1000px */
+  margin-inline: auto;
+  padding: max(10vh, 1rem) 1rem;
+}
+h2{
+  font-size: clamp(3rem, 10vw + 1em, 5rem) /* Min 3, Max 5, and Middle Point for Calculating  */
+}
+
+/* Link Styling */
+@layer styling-links {
+  .link a{
+    color: inherit;
+    text-decoration-thickness: 16px;
+    text-decoration-color: white;
+    text-decoration-style: wavy; /*dotted, dashed, double*/
+    text-decoration-skip-ink: none; /* Underline will go through letter's below part also. default, skip */
+    text-underline-offset: 16px; /* Distance between line and letter */
+    /* text-decoration-line: line-through - over-line, under-line, can use mix of multiple */
+  }
+}
+
+/* Ranges */
+.box:nth-child(n + 3):nth-last-child( -n + 8 ) {
+  border-color: yellowgreen; /*Select 3rd to 8th Item*/
+}
+
+/* Counters */
+@layer counters {
+  body{
+    counter-reset: section; /* Counter Name  or Reset if Any Counter already*/
+  }
+  section{
+    counter-increment: section;
+    position: relative;
+  }
+  section::after {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    content: 'Section: '  counter(section); /*All Section Tag will be counted and show- Section 1, Section 2..*/
+  }
+}
+
+/* Overflow Solution */
+@layer better-text-wrapping {
+  .flex-group {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 1rem;
+  }
+  .flex-group > * {
+    flex: 1;
+    min-width: fit-content; /* First try to fit, if not enough space then wrap */
+  }
+}
